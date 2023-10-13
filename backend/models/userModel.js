@@ -22,6 +22,7 @@ const userSchema = mongoose.Schema(
     cartId: {
       type: mongoose.Schema.ObjectId,
       ref: "Cart",
+      default:null
     },
     orders: [
       {

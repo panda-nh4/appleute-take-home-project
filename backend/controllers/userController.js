@@ -1,6 +1,11 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import generateToken from "../utils/genToken.js";
+
+const getAllUsers=asyncHandler(async(req,res)=>{
+  const allUsers=await User.find({}).select("-password")
+  res.status(200).json(allUsers)
+})
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const checkExists = await User.findOne({ email });
@@ -81,4 +86,4 @@ const updateProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { login, logOut, signUp, getProfile, updateProfile };
+export { login, logOut, signUp, getProfile, updateProfile,getAllUsers };
