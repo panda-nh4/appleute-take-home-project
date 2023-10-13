@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from 'bcryptjs'
+import bcrypt from "bcryptjs";
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -19,25 +19,32 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    cartId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Cart",
+    },
+    orders: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-
-userSchema.pre('save',async function(next){
-  if(!this.isModified('password')){
-    next()
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
   }
-  const salt=await bcrypt.genSalt(10);
-  this.password=await bcrypt.hash(this.password,salt)
-})
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
-userSchema.methods.matchPassword=async function(givenPass){
-  return await bcrypt.compare(givenPass,this.password)
-}
+userSchema.methods.matchPassword = async function (givenPass) {
+  return await bcrypt.compare(givenPass, this.password);
+};
 
-const User=mongoose.model("User",userSchema)
+const User = mongoose.model("User", userSchema);
 
-
-
-export default User
+export default User;
