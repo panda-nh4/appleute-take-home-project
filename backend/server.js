@@ -4,6 +4,7 @@ import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js"
 import cartRoutes from "./routes/cartRoute.js"
 import orderRoutes from "./routes/orderRoute.js"
+import homeRoutes from "./routes/homePage.js"
 import { errorHandler, noEndpoint } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
@@ -21,6 +22,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products",productRoutes)
 app.use('/api/cart',cartRoutes)
 app.use('/api/orders',orderRoutes)
+app.use('/api/home',homeRoutes)
 app.get("/", (req, res) => res.send("home"));
 app.use(noEndpoint);
 app.use(errorHandler);
