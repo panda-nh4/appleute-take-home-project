@@ -3,6 +3,8 @@
 
 A MERN stack e-commerce app.
 
+Screenshots and Postman collection in extra/ folder.
+
 
 
 
