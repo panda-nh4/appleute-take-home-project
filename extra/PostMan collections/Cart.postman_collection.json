@@ -1,0 +1,100 @@
+{
+	"info": {
+		"_postman_id": "3005eaa7-8199-4375-8601-8b6d8f68a5ae",
+		"name": "Cart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28660524"
+	},
+	"item": [
+		{
+			"name": "get items in cart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/cart/items",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"cart",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get cart value",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/cart/value",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"cart",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add items to cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"items\": [\n        {\"productId\": \"6528db4ecfca3a5e611777e8\",\n        \"qty\": \"5\"\n        },\n        {\"productId\": \"6528db4ecfca3a5e611777fa\",\n        \"qty\": \"1\"\n        }\n\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base}}/cart/addToCart",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"cart",
+						"addToCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove from cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"productId\": \"6528db4ecfca3a5e611777fa\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base}}/cart/removeFromCart",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"cart",
+						"removeFromCart"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

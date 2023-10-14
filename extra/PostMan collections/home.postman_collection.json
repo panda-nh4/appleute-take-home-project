@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "a6477b2f-fe0d-4402-98b0-d3c54a400694",
+		"name": "home",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28660524"
+	},
+	"item": [
+		{
+			"name": "featured",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/home/featured",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"home",
+						"featured"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "featuredProducts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/home/featuredProducts",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"home",
+						"featuredProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "topCategories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/home/topCategories",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"home",
+						"topCategories"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

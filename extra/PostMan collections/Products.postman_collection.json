@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "320a6eec-df6b-4243-9d82-0a0ac6040f7e",
+		"name": "Products",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28660524"
+	},
+	"item": [
+		{
+			"name": "get all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/products",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProductDetails",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/products/product?productId=6528db4ecfca3a5e611777f4",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"products",
+						"product"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "6528db4ecfca3a5e611777f4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get products by category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/products/category?category=Health",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"products",
+						"category"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "Health"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

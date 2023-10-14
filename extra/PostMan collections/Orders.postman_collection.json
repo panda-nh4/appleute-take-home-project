@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "b7fe24e1-cba3-4073-b8fb-fd295b9dc073",
+		"name": "Orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28660524"
+	},
+	"item": [
+		{
+			"name": "get past orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/orders",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "place order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/orders/placeOrder",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"orders",
+						"placeOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get order details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base}}/orders/details?orderId=652925c424ef76fdd996c2f9",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"orders",
+						"details"
+					],
+					"query": [
+						{
+							"key": "orderId",
+							"value": "652925c424ef76fdd996c2f9"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
