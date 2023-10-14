@@ -7,10 +7,9 @@ Screenshots and Postman collection in extra/ folder.
 
 
 
-
 ##  Endpoints
 
-/api/home
+## /api/home
 
 /featured - GET -  gets data for home carousel
 
