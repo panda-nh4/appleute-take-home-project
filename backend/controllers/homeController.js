@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import Home from "../models/homeModel.js";
 import { ObjectId } from "mongodb";
 
-const home_id="65292c1be25f8d8dc72677de"
+const home_id="652a2b568c2f49852a36fde9"
 
 const featured = asyncHandler(async (req, res) => {
     const featured=await Home.findById(home_id).select("featured -_id")

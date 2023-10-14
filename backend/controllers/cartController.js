@@ -15,24 +15,26 @@ const getCartItems = asyncHandler(async (req, res) => {
 
 const addToCart = asyncHandler(async (req, res) => {
   let productIds = [];
+  let cartProductIds = [];
   req.body.items.map((item) => (productIds = [...productIds, item.productId]));
   //check if products really exist
   await Promise.all(
     productIds.map(async (pId) => {
       const price = await Product.findOne({ _id: pId });
       if (!price) {
-        res.status(404)
+        res.status(404);
         throw new Error("One or more items do not exist");
       }
     })
   );
-//check duplicate
-if(new Set(productIds).size !== productIds.length){
-    res.status(400)
-    throw new Error("Duplicate items in cart")
-}
+  // check duplicate
+  if (new Set(productIds).size !== productIds.length) {
+    res.status(400);
+    throw new Error("Duplicate items in cart");
+  }
   const cartId = await User.findById(req.user._id).select("cartId -_id");
-  if (JSON.stringify(cartId) === "{}") {
+
+  if (cartId.cartId === null) {
     const newCart = await Cart.create({
       items: req.body.items,
     });
@@ -57,10 +59,71 @@ if(new Set(productIds).size !== productIds.length){
     }
   } else {
     const cartItems = await Cart.findById(cartId.cartId);
-    cartItems.items = req.body.items;
+    cartItems.items.map(
+      (item) => (cartProductIds = [...cartProductIds, item.productId.valueOf()])
+    );
+    const commonIds = cartProductIds.filter((value) =>
+      productIds.includes(value)
+    );
+
+    let updatedCartItems = [];
+    if (commonIds.length === 0) {
+      updatedCartItems = [...req.body.items, ...cartItems.items];
+    } else {
+      updatedCartItems = [...req.body.items];
+
+      const selectedFromCart = cartItems.items.filter(
+        (item) => !commonIds.includes(item.productId.valueOf())
+      );
+
+      updatedCartItems = [...updatedCartItems, ...selectedFromCart];
+    }
+    cartItems.items = updatedCartItems;
     const updatedCart = await cartItems.save();
-    res.status(200).json({ items: updatedCart.items });
+    if (updatedCart) res.status(200).json({ items: updatedCart.items });
+    else {
+      res.status(500);
+      throw new Error("Unable to add to cart");
+    }
   }
 });
 
-export { getCartItems, addToCart };
+const removeFromCart = asyncHandler(async (req, res) => {
+  const cartId = await User.findById(req.user._id).select("cartId -_id");
+  let cartProductIds = [];
+  if (cartId.cartId === null) {
+    res.status(404);
+    throw new Error("Cannot finde item to remove");
+  }
+  const cartItems = await Cart.findById(cartId.cartId);
+  cartItems.items.map(
+    (item) => (cartProductIds = [...cartProductIds, item.productId.valueOf()])
+  );
+  if (cartProductIds.includes(req.body.productId)) {
+    var newCartItems = [];
+    cartItems.items.map((item) => {
+      if (item.productId.valueOf() === req.body.productId) {
+        if (item.qty > 1) {
+          newCartItems = [
+            ...newCartItems,
+            { productId: item.productId.valueOf(), qty: item.qty - 1 },
+          ];
+        }
+      }else{
+        newCartItems=[...newCartItems,item]
+      }
+    });
+    cartItems.items = newCartItems;
+    const updatedCart = await cartItems.save();
+    if (updatedCart) res.status(200).json({ items: updatedCart.items });
+    else {
+      res.status(500);
+      throw new Error("Unable to add to cart");
+    }
+  } else {
+    res.status(404);
+    throw new Error("Not Found");
+  }
+});
+
+export { getCartItems, addToCart, removeFromCart };

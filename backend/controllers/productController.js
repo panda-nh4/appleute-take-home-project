@@ -12,10 +12,11 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
   if (req.query.category) {
     const productsInCategory = await Product.find({
       category: req.query.category,
-    });
+    }).select("_id");
+    const arrayOfproducts=productsInCategory.map(item=>item._id)
     res
       .status(200)
-      .json({ numberOfItems: productsInCategory.length, productsInCategory });
+      .json({ numberOfItems: productsInCategory.length, productsInCategory:arrayOfproducts });
   } else {
     res.status(400)
     throw new Error("Bad req.");
