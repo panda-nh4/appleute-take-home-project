@@ -31,8 +31,7 @@ const HomeScreen = () => {
   if (data === null) {
     fetchData();
     return <SpinnerLoading />;
-  } else {
-  }
+  } else 
 
   return (
     <>

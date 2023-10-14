@@ -9,11 +9,13 @@ import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import SpinnerLoading from "../components/SpinnerLoading";
+import { useGetCartMutation } from "../slices/cartApiSlice";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [getCartItems] = useGetCartMutation();
   const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const submit = async (e) => {
@@ -21,6 +23,15 @@ const LoginScreen = () => {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
+      try {
+        const res = await getCartItems().unwrap();
+        dispatch(updateLocalCart(res));
+        navigate("/cart");
+      } catch (err) {
+        if(err?.data?.message==="No token")
+        {navigate('/login')}
+        toast.error(err?.data?.message || err.error);
+      }
       navigate("/");
     } catch (err) {
         toast.error(err?.data?.message || err.error)

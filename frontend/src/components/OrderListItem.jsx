@@ -10,6 +10,7 @@ const OrderListItem = ({ orderId }) => {
       const res = await (
         await fetch(`/api/orders/details?orderId=${orderId}`)
       ).json();
+      console.log(res.items)
       if (res.items)
       setData(res)
     else
@@ -23,7 +24,6 @@ const OrderListItem = ({ orderId }) => {
     return <SpinnerLoading/>
   }
   
-  console.log(data)
   return (
     <div
       style={{
@@ -51,7 +51,7 @@ const OrderListItem = ({ orderId }) => {
       >
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {data.items.map((item,idx)=>
-            <div>
+            <div key={idx}>
                 <ProductCardItem productId={item.productId}/>
                 <span style={{paddingLeft:"10px"}}>{`Qty: ${item.qty}`}</span>
             </div>

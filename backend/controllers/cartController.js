@@ -16,6 +16,7 @@ const getCartItems = asyncHandler(async (req, res) => {
 const addToCart = asyncHandler(async (req, res) => {
   let productIds = [];
   let cartProductIds = [];
+  console.log(req.body)
   req.body.items.map((item) => (productIds = [...productIds, item.productId]));
   //check if products really exist
   await Promise.all(
@@ -58,7 +59,7 @@ const addToCart = asyncHandler(async (req, res) => {
       throw new Error("Unable to create cart");
     }
   } else {
-    const cartItems = await Cart.findById(cartId.cartId);
+    var cartItems = await Cart.findById(cartId.cartId);
     cartItems.items.map(
       (item) => (cartProductIds = [...cartProductIds, item.productId.valueOf()])
     );
@@ -109,8 +110,8 @@ const removeFromCart = asyncHandler(async (req, res) => {
             { productId: item.productId.valueOf(), qty: item.qty - 1 },
           ];
         }
-      }else{
-        newCartItems=[...newCartItems,item]
+      } else {
+        newCartItems = [...newCartItems, item];
       }
     });
     cartItems.items = newCartItems;
@@ -125,5 +126,31 @@ const removeFromCart = asyncHandler(async (req, res) => {
     throw new Error("Not Found");
   }
 });
-
-export { getCartItems, addToCart, removeFromCart };
+const getValue = asyncHandler(async (req, res) => {
+  const cartId = await User.findById(req.user._id).select("cartId -_id");
+  const cartContents = await Cart.findById(cartId.cartId);
+  if (cartContents.items.length === 0) {
+    res.status(200).json({totalValue:0});
+  } else {
+    const checkOutItems = cartContents.items;
+    let priceList = {};
+    let productIds = [];
+    checkOutItems.map((item) => {
+      priceList[item.productId] = item.qty;
+      productIds = [...productIds, item.productId];
+    });
+    await Promise.all(
+      productIds.map(async (pId) => {
+        const price = await Product.findOne({ _id: pId });
+        if (price) {
+          priceList[pId] = priceList[pId] * price.price;
+        } else {
+          throw new Error("One or more items do not exist");
+        }
+      })
+    );
+    const totalPrice = Object.values(priceList).reduce((a, b) => a + b, 0);
+    res.status(200).json({totalValue:totalPrice})
+  }
+});
+export { getCartItems, addToCart, removeFromCart,getValue };

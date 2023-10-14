@@ -41,7 +41,7 @@ const ProductCardItem = ({ productId }) => {
             </Card.Title>
           </div>
           <Card.Text style={{ color: "dark" }}>{`$ ${data.price}`}</Card.Text>
-          <Button>Add to cart</Button>
+          {/* <Button>Add to cart</Button> */}
         </Card.Body>
       </Card>
     );

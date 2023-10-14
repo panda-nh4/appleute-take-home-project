@@ -2,32 +2,70 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import SpinnerLoading from "../components/SpinnerLoading";
+import { useAddToCartMutation } from "../slices/cartApiSlice";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const ProductScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const backToHome = () => {
     navigate("/");
   };
   if (location.state === null) {
     return (
       <>
-        <div style={{ display: "block"}}>
-            <span><h2>Nothing to see here.</h2></span>
-            <span><Button variant="primary" onClick={()=>backToHome()}>Back to home</Button></span>
+        <div style={{ display: "block" }}>
+          <span>
+            <h2>Nothing to see here.</h2>
+          </span>
+          <span>
+            <Button variant="primary" onClick={() => backToHome()}>
+              Back to home
+            </Button>
+          </span>
         </div>
         ;
       </>
     );
   }
-  const viewProducts=(res,cat)=>{
-    navigate('/list',{state:{heading:cat,products:res.productsInCategory}})
-  }
-  const getProducts=async(catName)=>{
-    const res = await (await fetch(`/api/products/category?category=${catName}`)).json();
-    viewProducts(res,catName)
-  }
-  var inCart = true;
+  const viewProducts = (res, cat) => {
+    navigate("/list", {
+      state: { heading: cat, products: res.productsInCategory },
+    });
+  };
+  const getProducts = async (catName) => {
+    const res = await (
+      await fetch(`/api/products/category?category=${catName}`)
+    ).json();
+    viewProducts(res, catName);
+  };
+  var inCart = false;
+  const [addCart] = useAddToCartMutation();
+
+  const getCart = useSelector((state) => state.cartLocal.cartItems);
+  const addTocart = async () => {
+    var qty = 0;
+    try {
+      getCart.items.map((item) => {
+        if (item.productId === location.state._id) {
+          qty = item.qty;
+        }
+      });
+      qty += 1;
+    } catch {
+      toast.error("could not add");
+    }
+    const body = {
+      items: [{ productId: location.state._id, qty:qty }]
+    };
+    try {
+      const res = await addCart(body).unwrap();
+      toast.success("Added to cart");
+    } catch (err) {
+      toast.error(err?.data?.message || err.message);
+    }
+  };
   return (
     // <div style={{display:"flex", justifyContent:"space-between"}}>
     // <img src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg' width={"50%"} height={700}>
@@ -56,8 +94,11 @@ const ProductScreen = () => {
           <span style={{ fontSize: "21px" }}>
             Categories:{" "}
             {location.state.category.map((item, idx) => (
-                <span key={idx}>
-                <Button variant="primary" onClick={()=>getProducts(item)}>{item}</Button>{" "}</span>
+              <span key={idx}>
+                <Button variant="primary" onClick={() => getProducts(item)}>
+                  {item}
+                </Button>{" "}
+              </span>
             ))}
           </span>
           <div style={{ paddingTop: "150px" }}>
@@ -75,7 +116,7 @@ const ProductScreen = () => {
             </div>
           ) : (
             <div style={{ paddingTop: "20px" }}>
-              <Button>Add to Cart</Button>
+              <Button onClick={() => addTocart()}>Add to Cart</Button>
             </div>
           )}
           <div style={{ paddingTop: "20px" }}>
