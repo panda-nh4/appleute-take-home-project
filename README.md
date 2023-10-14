@@ -5,6 +5,7 @@ A MERN stack e-commerce app.
 
 Screenshots and Postman collection in extra/ folder.
 
+Database models in backend/models.
 
 
 ##  Endpoints
