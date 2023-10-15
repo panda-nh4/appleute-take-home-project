@@ -7,6 +7,8 @@ Screenshots and Postman collection in extra/ folder.
 
 Database models in backend/models.
 
+The project is deployed [here](https://p4ndanh4.shop/)
+
 
 ##  Endpoints
 
